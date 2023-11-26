@@ -15,7 +15,7 @@ export class WeatherService {
     private configService: ConfigService,
   ) {}
 
-  async getWeather(getWeatherDto: GetWeatherDto, user: User): Promise<Weather> {
+  async getWeather(getWeatherDto: GetWeatherDto): Promise<Weather> {
     const baseUrl = this.configService.get('WEATHER_API_BASE_URL');
     const apiKey = this.configService.get('WEATHER_API_KEY');
 
