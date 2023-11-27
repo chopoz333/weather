@@ -31,4 +31,7 @@ export class User {
 
   @OneToMany(() => WeatherLog, weather => weather.user)
   weatherLog: WeatherLog;
+
+  @Column({ type: 'varchar', nullable: true })
+  public refresh_token: string;
 }

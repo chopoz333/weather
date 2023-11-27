@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { Catch, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entity/user.entity';
@@ -8,6 +8,7 @@ import { WeatherLog } from './entity/weatherLog.entity';
 import { Weather } from './weather.interface';
 
 @Injectable()
+@Catch()
 export class WeatherService {
   constructor(
     @InjectRepository(WeatherLog)
@@ -31,13 +32,15 @@ export class WeatherService {
   }
 
   async logWeatherResult(user: User, temp: number = null, status: HttpStatus) {
-    const log = this.weatherLogRepository.create({
-      user_id: user.id,
-      action_time: Date.now(),
-      request_result: status,
-      temp_c: temp,
-    });
+    if (user.id && status) {
+      const log = this.weatherLogRepository.create({
+        user_id: user?.id,
+        action_time: Date.now(),
+        request_result: status,
+        temp_c: temp,
+      });
 
-    await this.weatherLogRepository.save(log);
+      await this.weatherLogRepository.save(log);
+    }
   }
 }

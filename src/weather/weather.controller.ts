@@ -1,6 +1,6 @@
 import { Body, Catch, Controller, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ApiBody, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { AccessTokenGuard } from 'src/auth/auth.guard';
 import { GetWeatherDto } from './dto/weather.dto';
 import { Weather } from './weather.interface';
 import { WeatherService } from './weather.service';
@@ -13,7 +13,7 @@ import { WeatherLogInterceptor } from './weatherLog.interceptor';
   example:
     'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibG9naW4iOiJjaG9wb3ozMzIzIiwiZmlvIjoiYXNkYXNkYXNkYXNkc2FkIiwiaWF0IjoxNzAxMDE5OTkwLCJleHAiOjE3MDExMDYzOTB9.o36TSLUmwXD2eRzFbHcOQ8n_JPJYlcBBHSUIiVa6eFg',
 })
-@UseGuards(AuthGuard)
+@UseGuards(AccessTokenGuard)
 @UseInterceptors(WeatherLogInterceptor)
 @Controller('weather')
 @Catch()

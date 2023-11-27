@@ -2,7 +2,7 @@ import { BadRequestException, Catch, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/user.dto';
+import { CreateUserDto, UpdateRefreshTokenDto } from './dto/user.dto';
 import { User } from './entity/user.entity';
 
 @Injectable()
@@ -29,7 +29,14 @@ export class UserService {
   }
 
   async getByLogin(login: string): Promise<User> {
-    return await this.userRepository.findOne({ where: { login }, select: ['id', 'login', 'password', 'fio'] });
+    return await this.userRepository.findOne({
+      where: { login },
+      select: ['id', 'login', 'password', 'fio', 'refresh_token'],
+    });
+  }
+
+  async updateRefreshToken(id: number, updateUserDto: UpdateRefreshTokenDto) {
+    return await this.userRepository.update(id, updateUserDto);
   }
 
   private async checkCreateUserConditions(userDto: CreateUserDto) {

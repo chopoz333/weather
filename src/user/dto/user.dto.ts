@@ -23,4 +23,10 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'fio not exist' })
   @Length(MIN_LENGTH, MAX_LENGTH, { message: 'fio must be longer than 5 characters' })
   public fio: string;
+
+  refreshToken: string;
+}
+
+export class UpdateRefreshTokenDto {
+  public refresh_token: string;
 }

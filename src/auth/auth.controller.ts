@@ -1,7 +1,8 @@
-import { Body, Catch, Controller, Post } from '@nestjs/common';
+import { Body, Catch, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from 'src/user/dto/user.dto';
 import { UserService } from 'src/user/user.service';
+import { RefreshTokenGuard } from './auth.guard';
 import { SignInResponse } from './auth.interfaces';
 import { AuthService } from './auth.service';
 import { SignInDto } from './dto/auth.dto';
@@ -29,5 +30,11 @@ export class AuthController {
     const user = await this.userService.createUser(createUserDto);
 
     return await this.authService.signIn(user.login, unHashedPassword);
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @Get('refresh')
+  async refreshTokens(@Req() req: any) {
+    return this.authService.refreshTokens(req.user?.id, req.user?.refreshToken);
   }
 }
